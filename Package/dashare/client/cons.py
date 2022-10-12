@@ -42,7 +42,7 @@
 ### 基础组件参数管理，为所有数据服务接口的基础
 REQUEST_PROTOCOL = {'http':'http'}
 REQUEST_HOST = {'local':'127.0.0.1'}
-REQUEST_PORT = {'default':'8000'}
+REQUEST_PORT = {'default':'11911'}
 DATAAPI = {'meteorological':'meteorological',
             'wind_turbine':'wind_turbine'}
 OPERATOR = {'get_wind_nwp_data_updated':'get_wind_nwp_data_updated',
