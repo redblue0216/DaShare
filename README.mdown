@@ -1,0 +1,90 @@
+# DaShare-数据服务接口包
+
+![shields_version](/static/shields_version.svg)    ![shields_license](/static/shields_license.svg)    ![shields_author](/static/shields_author.svg)    ![shiedls_python](/static/shields_python.svg)
+
+![dasharesymbol](/static/dasharesymbol.JPG)
+
+## 介绍
++ DaShare是一个数据服务接口包，主要功能是为底层数据向外提供了一个接口服务,可实现用户权限验证和流量限制。DaShare采用Client-Server架构设计，服务端使用HTTP协议构建数据服务的OpenAPI,暂时采用GET-method,客户端封装为python-sdk,提供python数据接口功能；用户权限采用token机制。
+
+
+## 安装
+dashare采用Python开发，得益于Python良好的社区环境，安装支持Pythonic风格的各种管理器。
+```
+	$ pip install dashare-0.1-xxxxxxxxxxxx.whl
+```
+
+
+## 快速指南
+
+### 服务端使用
++ 对于服务端数据服务启动，首先使用dashare命令行进行元数据库初始化,然后再启动服务端服务。以下是dasharectl命令行示例：
+
+```bash
+	$ dasharectl set-metadb
+
+	$ dasharectl start-service  
+````
+
+### 客户端使用
++ 对于客户端，dashare支持http协议的接口和python-sdk两种方式。
+
++ http接口使用
+1.注册用户示例
+```bash
+	$ curl http://127.0.0.1:11911/user/register?user=test&password=123456
+```
+2.登录用户示例
+```bash
+	$ curl http://127.0.0.1:11911/user/login?user=test&password=123456
+```
+3.用户生成token示例
+```bash
+	$ curl http://127.0.0.1:11911/user/gen_token?user=test&token_key=7890
+```
+4.用户获取token示例
+```bash
+	$ http://127.0.0.1:11911/user/get_token?user=test&password=123456
+```
+5.用户调用数据接口示例（用户调用数据接口需要经过前提流程，注册用户-登录用户-生成token-使用token获取数据）
+```bash
+	$ http://127.0.0.1:11911/meteorological/get_wind_nwp_data_updated?token_key=7890&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU1Mzg0MzkuMTU3MTQzLCJ1c2VyIjoidGVzdCJ9.ZXdp688IIJgnFgSqgRx7rXBxYNK0LLDZTuQL_P09saE&entity=XJJX&start_time=2022-05-30,00:00:00&end_time=2022-06-01,00:00:00
+```
++ python-sdk使用,以下是dashare主程脚本代码示例：
+```python
+	from dashare.client.api import DataAPI
+
+	### 设置除了token_key和token外，额外的参数
+	tmp_dict = {}
+	tmp_dict['entity'] = 'XJJX'
+	tmp_dict['start_time'] = '2022-05-30,00:00:00'
+	tmp_dict['end_time'] = '2022-06-01,00:00:00'
+	dashare = DataAPI(token_key = 7890,
+	                    token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjU0NjkxMTQuMTI4MDg4LCJ1c2VyIjoidGVzdCJ9.HgmyjDabinqOxU9v7DaKsPraFZd948SMfA9HGhTg-7U',
+	                    timeout=6000)
+	# df = dashare.query(dataapi='get_meteorological_data_local',params=tmp_dict)
+	# df = dashare.get_wind_nwp_data_updated_local(params=tmp_dict)
+	# df = dashare.get_wind_nwp_data_history_local(params=tmp_dict)
+	# df = dashare.get_wind_measure_data_local(params=tmp_dict)
+	df = dashare.get_wind_turbine_data_local(params=tmp_dict)
+	print(df)
+```
+
+## 设计
++ 采用Client-Server架构设计
++ 服务端使用HTTP协议构建数据服务的OpenAPI
++ 用户权限采用token机制
++ 用户流量限制
+
+### 技术列表
++ 元编程技术-partial技术
++ 元编程技术-__getattr__技术
++ 微服务-FastAPI
++ 加密验证-Token-JWT技术
++ 数据库-SQLite3
+
+
+### 设计UML图
+以下是设计的UML图：
+![dashareuml](/static/DaShareUML.png)
+

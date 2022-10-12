@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: dashare
+Version: 0.1
+Summary: DaShare is a dataapi python sdk with client and service
+Author: shihua
+Author-email: hua.shi@meritech-data.com
+License: MIT
+Platform: UNKNOWN
+Requires-Python: >=3.9.12
+
+UNKNOWN
+

@@ -1,0 +1,3 @@
+include dashare/doc/README.mdown
+include dashare/dashare_config.yaml
+graft dashare/test
